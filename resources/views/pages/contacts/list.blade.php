@@ -6,6 +6,7 @@
 @section('content')
     <div class="card p-3 mt-3">
         <h4>All Contacts</h4>
+    <h3>{{$count}}</h3>
         <div class="card p-2">
             <table class="table table-bordered">
                 <thead>

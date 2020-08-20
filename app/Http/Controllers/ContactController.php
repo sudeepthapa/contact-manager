@@ -15,7 +15,8 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::orderBy('created_at','desc')->get();   // select * from 'contacts'
-        return view('pages.contacts.list')->with('contacts',$contacts);
+        $count = Contact::all()->count();   // select * from 'contacts'
+        return view('pages.contacts.list')->with('contacts',$contacts)->with('count', $count);
     }
 
     /**
