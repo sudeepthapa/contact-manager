@@ -101,6 +101,7 @@ class ContactController extends Controller
         $contact->name = $request->name;
         $contact->nickname = $request->nickname;
         $contact->email = $request->email;
+        $contact->status = $request->status;
         $contact->address = $request->address;
         $contact->phone_number = $request->phone_number;
 
