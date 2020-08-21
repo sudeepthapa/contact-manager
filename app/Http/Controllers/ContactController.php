@@ -46,6 +46,15 @@ class ContactController extends Controller
     public function store(Request $request)
     {
 
+        $request->validate([
+            'name'=>'required | max:10',
+            'status'=>'required',
+            'phone_number'=>'required',
+            'email'=>'required | email',
+            'address'=>'required',
+            'nickname'=>'required',
+        ]);
+
         $contact = new Contact;
 
         $contact->name = $request->name;
@@ -96,6 +105,15 @@ class ContactController extends Controller
      */
     public function update(Request $request, $id)
     {
+        $request->validate([
+            'name'=>'required | max:10',
+            'status'=>'required',
+            'phone_number'=>'required',
+            'email'=>'required | email',
+            'address'=>'required',
+            'nickname'=>'required',
+        ]);        
+
         $contact = Contact::find($id);
         
         $contact->name = $request->name;
