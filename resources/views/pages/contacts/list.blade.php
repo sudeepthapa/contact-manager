@@ -55,7 +55,9 @@
                         @endforeach
 
                     @else
-                        <p>No records found</p>
+                            <tr>
+                                <td colspan="7" class="text-center">No records found</td>
+                            </tr>
                     @endif
 
                 </tbody>
