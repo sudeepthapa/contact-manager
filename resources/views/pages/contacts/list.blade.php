@@ -5,8 +5,20 @@
 
 @section('content')
     <div class="card p-3 mt-3">
-        <h4>All Contacts</h4>
-    <h3>{{$count}}</h3>
+        <div class="d-flex align-items-center mb-1">
+            <h4>All Contacts</h4>
+            <div class="ml-auto">
+                <a href=" {{ route('contacts.index') }} " class="btn btn-sm ml-auto {{ (request()->is('contacts')) ? 'btn-primary' : 'btn-secondary' }}">
+                    All <span class="badge badge-light">{{$all}}</span>
+                </a>
+            <a href="{{ route('contacts.active')}}" class="btn btn-sm ml-auto {{ (request()->is('contacts/active')) ? 'btn-primary' : 'btn-secondary' }}">
+                    Active <span class="badge badge-light">{{$active}}</span>
+                </a>
+                <a href="{{route('contacts.inactive')}}" class="btn btn-sm ml-auto {{ (request()->is('contacts/inactive')) ? 'btn-primary' : 'btn-secondary' }}">
+                    Inactive <span class="badge badge-light">{{$inactive}}</span>
+                </a>
+            </div>
+        </div>
         <div class="card p-2">
             <table class="table table-bordered">
                 <thead>
@@ -16,28 +28,36 @@
                         <th>Nickname</th>
                         <th>Email</th>
                         <th>Phone Number</th>
+                        <th>Status</th>
                         <th>Actions</th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach ($contacts as $item)
-                        <tr>
-                            <td>{{ $item->id }}</td>
-                            <td>{{ $item->name }}</td>
-                            <td>{{ $item->nickname }}</td>
-                            <td>{{ $item->email }}</td>
-                            <td>{{ $item->phone_number }}</td>
-                            <td class="d-flex ">
-                                <a href=" {{route('contacts.show', $item->id)}} " class="btn btn-sm btn-info mr-1"><i class="fa fa-eye"></i></a>
-                                <form action="{{route('contacts.destroy', $item->id)}}" method="POST">
-                                    @csrf
-                                    @method('DELETE')
-                                    <button type="submit" class="btn btn-sm btn-danger mr-1"><i class="fa fa-trash"></i></button>
-                                </form>
-                                <a href=" {{route('contacts.edit', $item->id)}} " class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
-                            </td>
-                        </tr>
-                    @endforeach
+                    @if(count($contacts)>0)            
+                        @foreach ($contacts as $item)
+                            <tr>
+                                <td>{{ $item->id }}</td>
+                                <td>{{ $item->name }}</td>
+                                <td>{{ $item->nickname }}</td>
+                                <td>{{ $item->email }}</td>
+                                <td>{{ $item->phone_number }}</td>
+                                <td>{{ $item->status }}</td>
+                                <td class="d-flex ">
+                                    <a href=" {{route('contacts.show', $item->id)}} " class="btn btn-sm btn-info mr-1"><i class="fa fa-eye"></i></a>
+                                    <form action="{{route('contacts.destroy', $item->id)}}" method="POST">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="btn btn-sm btn-danger mr-1"><i class="fa fa-trash"></i></button>
+                                    </form>
+                                    <a href=" {{route('contacts.edit', $item->id)}} " class="btn btn-sm btn-primary"><i class="fa fa-edit"></i></a>
+                                </td>
+                            </tr>
+                        @endforeach
+
+                    @else
+                        <p>No records found</p>
+                    @endif
+
                 </tbody>
             </table>
 

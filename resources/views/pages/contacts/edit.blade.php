@@ -43,6 +43,16 @@
                         <input type="text" name="address" value="{{ $contact->address }}" class="form-control">
                     </div>
                 </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">Status</label>
+                        <select name="status" value="{{ $contact->status }}" class="form-control">
+                            <option value="">--Select--</option>
+                            <option value={{1}} {{ $contact->status==1 ? 'selected':''}} >Active</option>
+                            <option value={{0}} {{ $contact->status==0 ? 'selected':''}}>Inactive</option>
+                        </select>
+                    </div>
+                </div>
             </div>
             <button class="btn btn-info" type="submit">Update</button>
         </form>

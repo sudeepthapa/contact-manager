@@ -16,4 +16,7 @@ use Illuminate\Support\Facades\Route;
 Route::redirect('/','/contacts');
 
 
+Route::get('/contacts/active', 'ContactController@active')->name('contacts.active');
+Route::get('/contacts/inactive', 'ContactController@inactive')->name('contacts.inactive');
 Route::resource('contacts','ContactController');
+

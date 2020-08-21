@@ -15,8 +15,16 @@ class ContactController extends Controller
     public function index()
     {
         $contacts = Contact::orderBy('created_at','desc')->get();   // select * from 'contacts'
-        $count = Contact::all()->count();   // select * from 'contacts'
-        return view('pages.contacts.list')->with('contacts',$contacts)->with('count', $count);
+        $all = Contact::all()->count();   // select * from 'contacts'
+        $active = Contact::where('status',true)->count();   // select * from 'contacts'
+        $inactive = Contact::where('status',false)->count();  // select * from 'contacts'
+
+        return view('pages.contacts.list', [
+            'all'=>$all,
+            'contacts'=>$contacts,
+            'active'=>$active,
+            'inactive'=>$inactive,
+        ]);
     }
 
     /**
@@ -37,12 +45,14 @@ class ContactController extends Controller
      */
     public function store(Request $request)
     {
+
         $contact = new Contact;
 
         $contact->name = $request->name;
         $contact->nickname = $request->nickname;
         $contact->email = $request->email;
         $contact->address = $request->address;
+        $contact->status = $request->status;
         $contact->phone_number = $request->phone_number;
 
         $contact->save();
@@ -112,4 +122,36 @@ class ContactController extends Controller
         $contact->delete();
         return redirect()->route('contacts.index');
     }
+
+    public function active()
+    {
+        $contacts = Contact::where('status',true)->orderBy('created_at','desc')->get();   // select * from 'contacts'
+        $all = Contact::all()->count();   // select * from 'contacts'
+        $active = Contact::where('status',true)->count();   // select * from 'contacts'
+        $inactive = Contact::where('status',false)->count();  // select * from 'contacts'
+
+        return view('pages.contacts.list', [
+            'all'=>$all,
+            'contacts'=>$contacts,
+            'active'=>$active,
+            'inactive'=>$inactive,
+        ]);
+    }
+
+    public function inactive()
+    {
+        $contacts = Contact::where('status',false)->orderBy('created_at','desc')->get();   // select * from 'contacts'
+        $all = Contact::all()->count();   // select * from 'contacts'
+        $active = Contact::where('status',true)->count();   // select * from 'contacts'
+        $inactive = Contact::where('status',false)->count();  // select * from 'contacts'
+
+        return view('pages.contacts.list', [
+            'all'=>$all,
+            'contacts'=>$contacts,
+            'active'=>$active,
+            'inactive'=>$inactive,
+        ]);
+    }
+
+
 }
