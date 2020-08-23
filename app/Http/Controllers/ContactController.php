@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Contact;
+use Carbon\Carbon;
 
 class ContactController extends Controller
 {
@@ -47,26 +48,42 @@ class ContactController extends Controller
     {
 
         $request->validate([
-            'name'=>'required | max:10',
+            'name'=>'required',
             'status'=>'required',
             'phone_number'=>'required',
             'email'=>'required | email',
             'address'=>'required',
             'nickname'=>'required',
+            'dob'=>'required',
+            'avatar'=>'required'
         ]);
+
+        //File Handling
+
+        $fileName = time().'_'.$request->file('avatar')->getClientOriginalName();
+
+        $filePath = $request->file('avatar')->storeAs('avatars', $fileName, 'public');
 
         $contact = new Contact;
 
-        $contact->name = $request->name;
+        $contact->dob = new Carbon($request->dob);
+
+        $contact->name = $request->input('name');
         $contact->nickname = $request->nickname;
         $contact->email = $request->email;
         $contact->address = $request->address;
         $contact->status = $request->status;
         $contact->phone_number = $request->phone_number;
 
+        $contact->avatar = 'storage/'.$filePath;
+
         $contact->save();
 
-        return redirect()->route('contacts.index');
+        return redirect()->route('contacts.index')
+            ->with('success','Contact Added Successfully')
+            ->with('error',"Cannot Add Contact")
+            ->with('warn',"Warning")
+            ->with('info',"Info");
     }
 
     /**
@@ -79,7 +96,7 @@ class ContactController extends Controller
     {
         $contact = Contact::find($id);
 
-        return view('pages.contacts.show', compact('contact'));
+        return view('pages.contacts.show', compact('contact'))->with('info','You are Viewing '.$contact->name."'s ".'contact');
     }
     
     /**
@@ -112,13 +129,20 @@ class ContactController extends Controller
             'email'=>'required | email',
             'address'=>'required',
             'nickname'=>'required',
-        ]);        
+        ]);
 
         $contact = Contact::find($id);
         
         $contact->name = $request->name;
         $contact->nickname = $request->nickname;
         $contact->email = $request->email;
+
+        if($request->file('avatar')){
+            //delete old file
+            //upload new file
+            $contact->avatar = "filePath";
+        }
+
         $contact->status = $request->status;
         $contact->address = $request->address;
         $contact->phone_number = $request->phone_number;
@@ -138,6 +162,10 @@ class ContactController extends Controller
     public function destroy($id)
     {
         $contact = Contact::find($id);
+        
+        //Delete Image
+        unlink($contact->avatar);
+
         $contact->delete();
         return redirect()->route('contacts.index');
     }

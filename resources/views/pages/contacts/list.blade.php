@@ -19,11 +19,14 @@
                 </a>
             </div>
         </div>
+
+        @include('partials.flashMessages')
+
         <div class="card p-2">
-            <table class="table table-bordered">
+            <table class="table table-bordered table-responsive">
                 <thead>
                     <tr>
-                        <th>ID</th>
+                        <th>Avatar</th>
                         <th>Name</th>
                         <th>Nickname</th>
                         <th>Email</th>
@@ -36,7 +39,11 @@
                     @if(count($contacts)>0)            
                         @foreach ($contacts as $item)
                             <tr>
-                                <td>{{ $item->id }}</td>
+                                <td>
+                                    <div style="width: 100px; height:100px; overflow:hidden; border-radius:50px;">
+                                        <img src="{{ asset($item->avatar) }}" alt="" class="img img-fluid">
+                                    </div>
+                                </td>
                                 <td>{{ $item->name }}</td>
                                 <td>{{ $item->nickname }}</td>
                                 <td>{{ $item->email }}</td>

@@ -6,7 +6,7 @@
 @section('content')
     <div class="card p-4 mt-3">
     {{-- @include('partials.error') --}}
-    <form action="{{route('contacts.store')}}" method="POST">
+    <form action="{{route('contacts.store')}}" method="POST" enctype="multipart/form-data">
         @csrf
             <div class="row">
                 <div class="col-md-6">
@@ -67,6 +67,26 @@
                             <option value={{0}} {{ old('status')==0?'selected':'' }}>InActive</option>
                         </select>
                         @error('status')
+                            <p class="text-danger">{{$message}}</p>
+                        @enderror
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">DOB</label>
+                        <input type="date" name="dob" value="{{old('dob')}}" class="form-control">
+                        @error('dob')
+                            <p class="text-danger">{{$message}}</p>
+                        @enderror
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="form-group">
+                        <label for="">Avatar</label>
+                        <input type="file" name="avatar" value="{{old('avatar')}}" class="form-control">
+                        @error('avatar')
                             <p class="text-danger">{{$message}}</p>
                         @enderror
                     </div>
