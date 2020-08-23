@@ -80,10 +80,7 @@ class ContactController extends Controller
         $contact->save();
 
         return redirect()->route('contacts.index')
-            ->with('success','Contact Added Successfully')
-            ->with('error',"Cannot Add Contact")
-            ->with('warn',"Warning")
-            ->with('info',"Info");
+            ->with('success','Contact Added Successfully');
     }
 
     /**

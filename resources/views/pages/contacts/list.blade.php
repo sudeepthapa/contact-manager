@@ -72,4 +72,12 @@
 
         </div>
     </div>
+
+    <script>
+
+        setTimeout(function(){
+            $(".alert").alert('close');
+        },5000)
+
+    </script>
 @endsection
